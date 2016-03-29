@@ -1,49 +1,18 @@
-'use strict';
+module.exports = function(options, imports, register) {
+  'use strict';
 
-module.exports = function (options, imports, register) {
-  var log = imports.debug('plugins:debug-logger');
-  log('start');
+  var logger = require('./logger');
 
-  var api = {
-    debug: imports.debug
-  };
+  var api = {};
 
-  options = setOptions(options);
+  //All debug calls will use the same transports
+  api.debug = logger.debugLogger(options);
 
-  if (options.active) {
-    var logger = imports.logger.create(options);
-    api.debug = function(name){
-      return function() {
-        var args = Array.prototype.slice.call(arguments);
-        args.unshift(name);
-        logger.info.apply(this, args);
-      };
-    };
-  }
+  //When using this one, module must pass in transport configuration
+  api.logger = logger;
 
-  log('register');
-  if (options.active) log('switching to alternate logger');
+  //This one will always log to configured transports (like using console.log)
+  api.appLogger = logger('APP', options);
+
   register(null, api);
 };
-
-function setOptions(options){
-  var defaults = {
-    name: 'debug.log',
-    transports: [
-      {
-        'type': 'daily',
-        'name': 'debug'
-      }
-    ]
-  };
-
-  if (options.name === undefined) {
-    options.name = defaults.name;
-  }
-
-  if (options.transports === undefined) {
-    options.transports = defaults.transports;
-  }
-
-  return options;
-}

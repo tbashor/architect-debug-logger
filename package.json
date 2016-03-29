@@ -1,6 +1,6 @@
 {
   "name": "architect-debug-logger",
-  "description": "Architect.js plugin to route logging statements targeted at the debug library to a winston transport.",
+  "description": "A logging utility that combines the best of winston and debug",
   "version": "1.0.0",
   "author": {
     "name": "Todd Bashor",
@@ -8,7 +8,11 @@
   },
   "license": "MIT",
   "main": "./plugin.js",
+  "browser": "./browser.js",
   "keywords": [
+    "debug",
+    "debugger",
+    "log",
     "winston",
     "logging",
     "sysadmin",
@@ -17,15 +21,19 @@
     "plugin"
   ],
   "plugin": {
-    "consumes": [
-      "debug",
-      "logger"
-    ],
+    "consumes": [],
     "provides": [
-      "debug"
+      "debug",
+      "logger",
+      "appLogger"
     ]
   },
   "dependencies": {
+    "cli-color": "1.1.0",
+    "lodash": "4.6.1",
+    "moment": "2.12.0",
+    "winston": "2.2.0",
+    "winston-daily-rotate-file": "1.0.1"
   },
   "readme": "",
   "repository": {
