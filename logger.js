@@ -1,15 +1,15 @@
 'use strict';
 
 /*
-TODO:
-- browser support
-- documentation
-- express request and response routing (express-winston-2)
-- http or ws logging (winstond, winston-tagged-http-logger?)
-- loggly
-- mail (winston-mail)
-- file
--
+ TODO:
+ - browser support
+ - documentation
+ - express request and response routing (express-winston-2)
+ - http or ws logging (winstond, winston-tagged-http-logger?)
+ - loggly
+ - mail (winston-mail)
+ - file
+ -
  */
 
 var winston = require('winston');
@@ -20,18 +20,18 @@ var moment = require('moment');
 var EventEmitter = require('events').EventEmitter;
 var loggerEventBus = new EventEmitter();
 var prevColor = 0;
+var Daily = require('winston-daily-rotate-file');
 
 exports = module.exports = logger;
 exports.debugLogger = debugLogger;
 
-//If they want to use a transport not in the list, they need to use
-//.transports.add after creating the logger
+// If they want to use a transport not in the list, they need to use
+// .add after creating the logger
 exports.availableTransports = {
   console: winston.transports.Console,
   file: winston.transports.File,
   webhook: winston.transports.Webhook,
-  http: winston.transports.Http,
-  daily: require('winston-daily-rotate-file')
+  http: winston.transports.Http
 };
 
 exports.enable = enable;
@@ -99,13 +99,20 @@ function randomColor() {
 }
 
 function createLogger(namespace, options){
-  winston.loggers.add(namespace, getTransportConfiguration(namespace, options));
-  return winston.loggers.get(namespace);
+  var transportConfig = getTransportConfiguration(namespace, options);
+  if (transportConfig.dailyRotateFile) {
+    winston.loggers.options.transports = [
+      new Daily(transportConfig.dailyFileRotate)
+    ]
+    delete transportConfig.dailyFileRotate;
+  }
+  winston.loggers.add(namespace, transportConfig);
+  var logger = winston.loggers.get(namespace);
+  return logger;
 }
 
 function getTransportConfiguration(namespace, options){
-  var transports = _.create(options.transports);
-
+  var transports = _.create({}, options.transports);
   for (var transport in transports){
     var transportOptions = transports[transport];
     if (transport === 'console'){
