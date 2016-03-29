@@ -1,0 +1,39 @@
+{
+  "name": "architect-debug-logger",
+  "description": "Architect.js plugin to route logging statements targeted at the debug library to a winston transport.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Todd Bashor",
+    "email": "todd@thestartersacademy.com"
+  },
+  "license": "MIT",
+  "main": "./plugin.js",
+  "keywords": [
+    "winston",
+    "logging",
+    "sysadmin",
+    "tools",
+    "architect",
+    "plugin"
+  ],
+  "plugin": {
+    "consumes": [
+      "debug",
+      "logger"
+    ],
+    "provides": [
+      "debug"
+    ]
+  },
+  "dependencies": {
+  },
+  "readme": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tbashor/architect-debug-logger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tbashor/architect-debug-logger/issues"
+  },
+  "homepage": "https://github.com/tbashor/architect-debug-logger#readme"
+}

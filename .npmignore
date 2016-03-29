@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+.node_history
+.DS_STORE
+.idea
+*.sublime-*
+.project
+.netbeans
+nbproject
