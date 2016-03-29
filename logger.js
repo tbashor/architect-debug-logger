@@ -100,10 +100,10 @@ function randomColor() {
 
 function createLogger(namespace, options){
   var transportConfig = getTransportConfiguration(namespace, options);
-  if (transportConfig.dailyRotateFile) {
+  if (transportConfig.dailyFileRotate) {
     winston.loggers.options.transports = [
       new Daily(transportConfig.dailyFileRotate)
-    ]
+    ];
     delete transportConfig.dailyFileRotate;
   }
   winston.loggers.add(namespace, transportConfig);
