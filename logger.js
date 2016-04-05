@@ -62,20 +62,6 @@ exports.skips = [];
 function logger(namespace, options){
   var actualLogger = function(){};
 
-  loggerEventBus.on('disable', function(namespace){
-    if (namespace === actualLogger.namespace && namespace !== 'APP') {
-      actualLogger('disabled');
-      actualLogger.enabled = false;
-    }
-  });
-
-  loggerEventBus.on('enable', function(namespace){
-    if (namespace === actualLogger.namespace) {
-      actualLogger.enabled = true;
-      actualLogger('enabled');
-    }
-  });
-
   if (exports.enabled(namespace) || namespace === 'APP'){
     actualLogger = getEnabledLogger(namespace, options);
     actualLogger.enabled = true;
@@ -108,6 +94,19 @@ function createLogger(namespace, options){
   }
   winston.loggers.add(namespace, transportConfig);
   var logger = winston.loggers.get(namespace);
+  loggerEventBus.on('disable', function(namespace){
+    if (namespace === logger.namespace && namespace !== 'APP') {
+      logger('disabled');
+      logger.enabled = false;
+    }
+  });
+
+  loggerEventBus.on('enable', function(namespace){
+    if (namespace === logger.namespace) {
+      logger.enabled = true;
+      logger('enabled');
+    }
+  });
   return logger;
 }
 
