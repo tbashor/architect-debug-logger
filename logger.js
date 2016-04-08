@@ -22,6 +22,20 @@ var loggerEventBus = new EventEmitter();
 var prevColor = 0;
 var Daily = require('winston-daily-rotate-file');
 
+loggerEventBus.on('disable', function(namespace){
+  if (namespace !== 'APP') {
+    var logger = winston.loggers.get(namespace);
+    logger('disabled');
+    logger.enabled = false;
+  }
+});
+
+loggerEventBus.on('enable', function(namespace){
+  var logger = winston.loggers.get(namespace);
+  logger.enabled = true;
+  logger('enabled');
+});
+
 exports = module.exports = logger;
 exports.debugLogger = debugLogger;
 
@@ -94,19 +108,6 @@ function createLogger(namespace, options){
   }
   winston.loggers.add(namespace, transportConfig);
   var logger = winston.loggers.get(namespace);
-  loggerEventBus.on('disable', function(namespace){
-    if (namespace === logger.namespace && namespace !== 'APP') {
-      logger('disabled');
-      logger.enabled = false;
-    }
-  });
-
-  loggerEventBus.on('enable', function(namespace){
-    if (namespace === logger.namespace) {
-      logger.enabled = true;
-      logger('enabled');
-    }
-  });
   return logger;
 }
 
