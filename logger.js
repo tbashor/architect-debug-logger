@@ -13,7 +13,6 @@
  */
 
 var winston = require('winston');
-var util = require('util');
 var _ = require('lodash');
 var color = require('cli-color');
 var moment = require('moment');
@@ -21,20 +20,6 @@ var EventEmitter = require('events').EventEmitter;
 var loggerEventBus = new EventEmitter();
 var prevColor = 0;
 var Daily = require('winston-daily-rotate-file');
-
-loggerEventBus.on('disable', function(namespace){
-  if (namespace !== 'APP') {
-    var logger = winston.loggers.get(namespace);
-    logger('disabled');
-    logger.enabled = false;
-  }
-});
-
-loggerEventBus.on('enable', function(namespace){
-  var logger = winston.loggers.get(namespace);
-  logger.enabled = true;
-  logger('enabled');
-});
 
 exports = module.exports = logger;
 exports.debugLogger = debugLogger;
@@ -108,6 +93,7 @@ function createLogger(namespace, options){
   }
   winston.loggers.add(namespace, transportConfig);
   var logger = winston.loggers.get(namespace);
+  console.log(logger);
   return logger;
 }
 
