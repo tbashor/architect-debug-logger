@@ -93,7 +93,6 @@ function createLogger(namespace, options){
   }
   winston.loggers.add(namespace, transportConfig);
   var logger = winston.loggers.get(namespace);
-  console.log(logger);
   return logger;
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "architect-debug-logger",
   "description": "A logging utility that combines the best of winston and debug",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": {
     "name": "Todd Bashor",
     "email": "todd@thestartersacademy.com"
