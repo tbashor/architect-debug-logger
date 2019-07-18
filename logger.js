@@ -100,6 +100,7 @@ function getTransportConfiguration(namespace, options){
   var transports = _.create({}, options.transports);
   for (var transport in transports){
     var transportOptions = transports[transport];
+    transportOptions.colorize = transportOptions.colorize === false ? false : true;
     if (transport === 'console'){
       transportOptions = _.merge({
         timestamp: timestamp,
@@ -112,7 +113,12 @@ function getTransportConfiguration(namespace, options){
     }
     // Have to color it here because the transport object is not available in
     // the format function
-    transportOptions.label = color[options.color]('[' + namespace + ']');
+    if (transportOptions.colorize) {
+      transportOptions.label = color[options.color]('[' + namespace + ']');
+    } else {
+      transportOptions.label = '[' + namespace + ']';
+    }
+
     transports[transport] = transportOptions;
   }
 
